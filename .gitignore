@@ -1,0 +1,12 @@
+node_modules
+dist
+.DS_Store
+
+# Privé: je Goodreads-export bevat o.a. je eigen reviews en notities
+import/
+
+# Grote originele coverfoto's (alleen de verkleinde versies in public/covers/ gaan mee)
+covers-origineel/
+
+# Wordt automatisch gegenereerd door scripts/scan-covers.js
+src/data/covers.json
