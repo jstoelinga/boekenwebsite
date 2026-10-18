@@ -19,7 +19,7 @@ import { PATHS } from './lib/common.js'
 const BREEDTE = 600
 const KWALITEIT = 82
 const TOEGESTANE_EXTENSIES = new Set(['.jpg', '.jpeg', '.png', '.webp', '.tif', '.tiff'])
-const NAAM_PATROON = /^(\d{13}|gr-\d+)-(voor|achter)$/i
+const NAAM_PATROON = /^(\d{13}|gr-\d+|eigen-\d+)-(voor|achter)$/i
 const forceer = process.argv.includes('--forceer')
 
 let sharp

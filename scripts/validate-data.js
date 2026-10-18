@@ -6,7 +6,8 @@
 //
 // ── Het datamodel (dit script is de "wet") ─────────────────────────────────────────────
 // gelezen.json  (lijst van objecten)
-//   id                 verplicht  ISBN-13 (13 cijfers, geldig controlecijfer) of "gr-<Goodreads Book Id>"
+//   id                 verplicht  ISBN-13 (13 cijfers, geldig controlecijfer), "gr-<Goodreads Book Id>",
+//                                 of "eigen-<nummer>" (boek zonder ISBN, via de website toegevoegd)
 //   titel              verplicht  tekst
 //   auteur             verplicht  tekst
 //   datum_gelezen      verplicht  "JJJJ-MM-DD" of null (= onbekend)
@@ -70,7 +71,7 @@ if (!Array.isArray(gelezen)) {
     const label = `gelezen.json #${i + 1}${b && b.id ? ` (${b.id})` : ''}`
     if (typeof b !== 'object' || b === null || Array.isArray(b)) return fout(`${label}: is geen object`)
 
-    if (!isTekst(b.id) || !ID_PATTERN.test(b.id)) fout(`${label}: id moet een ISBN-13 of "gr-<nummer>" zijn`)
+    if (!isTekst(b.id) || !ID_PATTERN.test(b.id)) fout(`${label}: id moet een ISBN-13, "gr-<nummer>" of "eigen-<nummer>" zijn`)
     else {
       if (/^\d{13}$/.test(b.id) && !isValidIsbn13(b.id)) fout(`${label}: id is geen geldig ISBN-13 (controlecijfer klopt niet)`)
       if (ids.has(b.id)) fout(`${label}: id komt dubbel voor`)

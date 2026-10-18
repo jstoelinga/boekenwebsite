@@ -13,9 +13,11 @@
     "check": "node scripts/validate-data.js",
     "covers": "node scripts/scan-covers.js",
     "covers:verkleinen": "node scripts/resize-covers.js",
-    "zoek": "node scripts/zoek-id.js"
+    "zoek": "node scripts/zoek-id.js",
+    "test": "node --test server/boek-api.test.js"
   },
   "dependencies": {
+    "playwright": "^1.64.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.0"

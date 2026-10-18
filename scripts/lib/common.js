@@ -16,11 +16,12 @@ export const PATHS = {
   importCsv: path.join(ROOT, 'import/goodreads_library_export.csv'),
 }
 
-// Een id is een ISBN-13 (13 cijfers) of "gr-" + het Goodreads Book Id.
-export const ID_PATTERN = /^(\d{13}|gr-\d+)$/
+// Een id is een ISBN-13 (13 cijfers), "gr-" + het Goodreads Book Id, of "eigen-" + een nummer
+// (voor boeken zonder ISBN die je via de website toevoegt, zie server/boek-api.js).
+export const ID_PATTERN = /^(\d{13}|gr-\d+|eigen-\d+)$/
 
 // Toegestane bestandsnamen in public/covers/, bijvoorbeeld 9780261102217-voor.jpg
-export const COVER_FILE_PATTERN = /^(\d{13}|gr-\d+)-(voor|achter)\.jpg$/
+export const COVER_FILE_PATTERN = /^(\d{13}|gr-\d+|eigen-\d+)-(voor|achter)\.jpg$/
 
 export function readJson(file, fallback) {
   if (!fs.existsSync(file)) return fallback
