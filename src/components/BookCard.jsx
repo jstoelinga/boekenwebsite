@@ -1,13 +1,16 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import CoverImage from './CoverImage.jsx'
 import Stars from './Stars.jsx'
 
 function BookCard({ book }) {
+  const location = useLocation()
   const jaar = book.datum_gelezen ? book.datum_gelezen.slice(0, 4) : null
 
   return (
     <Link
       to={`/boeken/${book.id}`}
+      // Onthoud waar je vandaan kwam (bijvoorbeeld /boeken?jaar=2026&pagina=3), zodat de terugknop daar weer uitkomt.
+      state={{ van: location.pathname + location.search }}
       className="group block bg-white rounded-md border border-ink/10 overflow-hidden hover:border-gold hover:shadow-lg transition"
     >
       <div className="aspect-[2/3] overflow-hidden bg-ink/5">

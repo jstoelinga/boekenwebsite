@@ -139,6 +139,8 @@ let aantalCovers = 0
 if (fs.existsSync(PATHS.coversDir)) {
   for (const naam of fs.readdirSync(PATHS.coversDir).sort()) {
     if (naam.startsWith('.')) continue
+    if (naam === 'no-cover.jpg') continue
+if (fs.statSync(`${PATHS.coversDir}/${naam}`).isDirectory()) continue
     const m = COVER_FILE_PATTERN.exec(naam)
     if (!m) {
       fout(`public/covers/${naam}: ongeldige bestandsnaam. Gebruik <id>-voor.jpg of <id>-achter.jpg, alles in kleine letters (op GitHub Pages telt dat mee).`)

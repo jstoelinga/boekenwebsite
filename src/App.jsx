@@ -1,102 +1,40 @@
-import { useSyncExternalStore } from 'react'
-import gelezenData from '../data/gelezen.json'
-import beoordelingenData from '../data/beoordelingen.json'
-import coversData from '../data/covers.json'
-import { voorCoverKandidaten, achterCoverKandidaten } from '../utils/covers.js'
+import { Routes, Route, Link } from 'react-router-dom'
+import Home from './pages/Home.jsx'
+import BookList from './pages/BookList.jsx'
+import BookDetail from './pages/BookDetail.jsx'
+import NieuwBoek from './pages/NieuwBoek.jsx'
+import BoekBewerken from './pages/BoekBewerken.jsx'
+import { useBoekenApi } from './hooks/useBoekenApi.js'
 
-function maakBoek(boek, beoordeling, covers) {
-  return {
-    ...boek,
-    beoordeling,
-    coverVoor: voorCoverKandidaten(boek, covers),
-    coverAchter: achterCoverKandidaten(boek, covers),
-  }
+function App() {
+  // De knop "Boek toevoegen" bestaat alleen als de lokale opslag-API bereikbaar is (npm run dev).
+  const kanToevoegen = useBoekenApi() === true
+
+  return (
+    <div className="min-h-screen">
+      <nav className="bg-ink text-cream px-6 py-4 flex items-center gap-6">
+        <Link to="/" className="font-serif text-lg font-semibold">
+          Mijn Bibliotheek
+        </Link>
+        <Link to="/" className="hover:text-gold transition">Home</Link>
+        <Link to="/boeken" className="hover:text-gold transition">Alle boeken</Link>
+        {kanToevoegen && (
+          <Link to="/toevoegen" className="ml-auto px-3 py-1.5 rounded-md bg-gold text-ink text-sm font-medium hover:opacity-90 transition">
+            + Boek toevoegen
+          </Link>
+        )}
+      </nav>
+      <main className="max-w-5xl mx-auto px-4 py-8">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/boeken" element={<BookList />} />
+          <Route path="/boeken/:id" element={<BookDetail />} />
+          <Route path="/boeken/:id/bewerken" element={<BoekBewerken />} />
+          <Route path="/toevoegen" element={<NieuwBoek />} />
+        </Routes>
+      </main>
+    </div>
+  )
 }
 
-// Eén keer samenvoegen bij het laden van de module, niet bij elke render.
-// Een Map voor de koppeling (in plaats van .find() per boek) houdt dit ook bij
-// 2000+ boeken snel: opzoeken is dan O(1) in plaats van O(n) per boek.
-const beoordelingPerId = new Map(beoordelingenData.map((r) => [r.id, r]))
-const startBoeken = gelezenData.map((boek) => maakBoek(boek, beoordelingPerId.get(boek.id) ?? null, coversData))
-
-// De huidige collectie. Wordt nooit aangepast, alleen vervangen door een nieuw object,
-// zodat React (useMemo in BookList, enz.) ziet dat er iets veranderd is.
-let staat = {
-  covers: coversData,
-  boeken: startBoeken,
-  boekPerId: new Map(startBoeken.map((b) => [b.id, b])),
-}
-const luisteraars = new Set()
-const abonneer = (luisteraar) => {
-  luisteraars.add(luisteraar)
-  return () => luisteraars.delete(luisteraar)
-}
-const leesStaat = () => staat
-
-// Zelfde functies als altijd; ze reageren nu ook op voegBoekToe().
-export function useBooks() {
-  return useSyncExternalStore(abonneer, leesStaat, leesStaat).boeken
-}
-
-export function useBook(id) {
-  return useSyncExternalStore(abonneer, leesStaat, leesStaat).boekPerId.get(id) ?? null
-}
-
-// Zet een zojuist opgeslagen boek direct in de collectie op het scherm. Het boek staat dan al in
-// gelezen.json (opgeslagen door server/boek-api.js); dit zorgt er alleen voor dat je het meteen ziet,
-// zonder de pagina te herladen. Na een herstart komt het boek gewoon uit gelezen.json.
-export function voegBoekToe({ boek, beoordeling = null, covers = null }) {
-  if (staat.boekPerId.has(boek.id)) return
-  const nieuweCovers = covers ? { ...staat.covers, [boek.id]: covers } : staat.covers
-  const nieuwBoek = maakBoek(boek, beoordeling, nieuweCovers)
-  staat = {
-    covers: nieuweCovers,
-    boeken: [nieuwBoek, ...staat.boeken],
-    boekPerId: new Map(staat.boekPerId).set(boek.id, nieuwBoek),
-  }
-  luisteraars.forEach((luisteraar) => luisteraar())
-}
-
-export function updateBoekInState({ boek, beoordeling = null, covers = null }) {
-  if (!staat.boekPerId.has(boek.id)) return
-
-  const volgendeCovers = { ...staat.covers }
-  if (covers === null) {
-    delete volgendeCovers[boek.id]
-  } else {
-    Object.assign(volgendeCovers, covers)
-    if (covers && Object.keys(covers).length === 0) delete volgendeCovers[boek.id]
-  }
-
-  const bijgewerkt = maakBoek(boek, beoordeling, volgendeCovers)
-  const nieuweBoeken = staat.boeken.map((b) => (b.id === boek.id ? bijgewerkt : b))
-  const boekPerId = new Map(staat.boekPerId)
-  boekPerId.set(boek.id, bijgewerkt)
-
-  staat = {
-    covers: volgendeCovers,
-    boeken: nieuweBoeken,
-    boekPerId,
-  }
-  luisteraars.forEach((luisteraar) => luisteraar())
-}
-
-export function vervangCoversInState(boekId, covers) {
-  if (!covers) return
-  const volgendeCovers = { ...staat.covers, [boekId]: covers }
-  const nieuweBoeken = staat.boeken.map((boek) => {
-    if (boek.id !== boekId) return boek
-    return maakBoek(boek, boek.beoordeling, volgendeCovers)
-  })
-  const boekPerId = new Map(staat.boekPerId)
-  const actieve = boekPerId.get(boekId)
-  if (actieve) {
-    boekPerId.set(boekId, maakBoek(actieve, actieve.beoordeling, volgendeCovers))
-  }
-  staat = {
-    covers: volgendeCovers,
-    boeken: nieuweBoeken,
-    boekPerId,
-  }
-  luisteraars.forEach((luisteraar) => luisteraar())
-}
+export default App
