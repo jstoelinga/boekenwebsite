@@ -19,6 +19,9 @@ toont het als homepage, overzicht met zoek/filter, en detailpagina's.
 | `src/pages/Home.jsx` | Homepage: recent gelezen + favorieten. |
 | `src/pages/BookList.jsx` | Overzicht van alle boeken, met zoekbalk en filters. |
 | `src/pages/BookDetail.jsx` | Detailpagina van één boek. |
+| `src/pages/ThemePicker.jsx` | Galerij om thema's te bekijken, tijdelijk te previewen en toe te passen. |
+| `src/themes/themes.js` | Centrale configuratie van beschikbare thema's en hun kleuren. |
+| `src/themes/ThemeContext.jsx` | Past het actieve thema toe en bewaart de keuze in de browser. |
 | `src/components/BookCard.jsx` | De "boekentegel" die overal wordt hergebruikt. |
 | `vite.config.js` | Bouwconfiguratie. Bevat de `base` (repo-naam) die nodig is voor GitHub Pages. |
 | `.github/workflows/deploy.yml` | Publiceert de site automatisch naar GitHub Pages bij elke push naar `main`. |
@@ -33,6 +36,7 @@ lokaal draaien, publiceren).
 - **Tailwind CSS** voor styling
 - **React Router** voor de pagina's, zonder eigen server nodig
 - **JSON-bestand** als databron — geen database
+- **CSS-variabelen en `localStorage`** voor thema's; de gekozen voorkeur blijft in dezelfde browser bewaard en wordt niet naar andere apparaten gesynchroniseerd
 - **GitHub Actions** bouwt en publiceert de site automatisch naar **GitHub Pages**
 
 Er is bewust geen backend. Dat betekent: geen inlogsysteem, geen live

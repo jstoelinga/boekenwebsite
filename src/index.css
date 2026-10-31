@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  color-scheme: light;
+  --theme-cream: 246 241 231;
+  --theme-ink: 43 38 33;
+  --theme-moss: 63 91 69;
+  --theme-gold: 184 134 43;
+  --theme-surface: 255 255 255;
+  --theme-muted: 105 98 89;
+}
+
+[data-theme='dark-academia'] {
+  color-scheme: dark;
+}
+
 body {
   @apply bg-cream text-ink font-sans;
+  transition: background-color 180ms ease, color 180ms ease;
 }

@@ -4,10 +4,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        cream: "#F6F1E7",
-        ink: "#2B2621",
-        moss: "#3F5B45",
-        gold: "#B8862B",
+        cream: "rgb(var(--theme-cream) / <alpha-value>)",
+        ink: "rgb(var(--theme-ink) / <alpha-value>)",
+        moss: "rgb(var(--theme-moss) / <alpha-value>)",
+        gold: "rgb(var(--theme-gold) / <alpha-value>)",
+        white: "rgb(var(--theme-surface) / <alpha-value>)",
       },
       fontFamily: {
         serif: ["Lora", "serif"],

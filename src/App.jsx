@@ -4,6 +4,7 @@ import BookList from './pages/BookList.jsx'
 import BookDetail from './pages/BookDetail.jsx'
 import NieuwBoek from './pages/NieuwBoek.jsx'
 import BoekBewerken from './pages/BoekBewerken.jsx'
+import ThemePicker from './pages/ThemePicker.jsx'
 import { useBoekenApi } from './hooks/useBoekenApi.js'
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         </Link>
         <Link to="/" className="hover:text-gold transition">Home</Link>
         <Link to="/boeken" className="hover:text-gold transition">Alle boeken</Link>
+        <Link to="/thema" className="hover:text-gold transition">Thema's</Link>
         {kanToevoegen && (
           <Link to="/toevoegen" className="ml-auto px-3 py-1.5 rounded-md bg-gold text-ink text-sm font-medium hover:opacity-90 transition">
             + Boek toevoegen
@@ -31,6 +33,7 @@ function App() {
           <Route path="/boeken/:id" element={<BookDetail />} />
           <Route path="/boeken/:id/bewerken" element={<BoekBewerken />} />
           <Route path="/toevoegen" element={<NieuwBoek />} />
+          <Route path="/thema" element={<ThemePicker />} />
         </Routes>
       </main>
     </div>
