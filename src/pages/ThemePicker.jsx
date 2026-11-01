@@ -6,8 +6,13 @@ function ThemePreview({ theme }) {
     <div
       className="overflow-hidden rounded-lg border border-ink/10 p-3"
       style={{ backgroundColor: `rgb(${theme.tokens.cream})`, color: `rgb(${theme.tokens.ink})` }}
-      aria-label={`Kleurvoorbeeld van ${theme.name}`}
+      aria-label={`Themapreview van ${theme.name}`}
     >
+      <div
+        className="mb-3 h-24 rounded-md bg-cover bg-center"
+        style={{ backgroundImage: `url("${theme.backgroundImage}")` }}
+        aria-label={`Achtergrondpreview van ${theme.name}`}
+      />
       <div className="flex items-center justify-between gap-2">
         <span className="font-serif text-xs font-semibold">Mijn bibliotheek</span>
         <span className="rounded-full px-2 py-1 text-[9px]" style={{ backgroundColor: `rgb(${theme.tokens.moss})`, color: `rgb(${theme.tokens.surface})` }}>

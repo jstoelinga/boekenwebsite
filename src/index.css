@@ -4,6 +4,7 @@
 
 :root {
   color-scheme: light;
+  --theme-background-image: none;
   --theme-cream: 246 241 231;
   --theme-ink: 43 38 33;
   --theme-moss: 63 91 69;
@@ -18,5 +19,13 @@
 
 body {
   @apply bg-cream text-ink font-sans;
+  background-image:
+    linear-gradient(rgb(var(--theme-cream) / 0.78), rgb(var(--theme-cream) / 0.78)),
+    var(--theme-background-image);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  min-height: 100vh;
   transition: background-color 180ms ease, color 180ms ease;
 }

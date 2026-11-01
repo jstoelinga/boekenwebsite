@@ -17,6 +17,7 @@ function readSavedTheme() {
 function applyThemeTokens(theme) {
   const root = document.documentElement
   root.dataset.theme = theme.id
+  root.style.setProperty('--theme-background-image', `url("${theme.backgroundImage}")`)
   Object.entries(theme.tokens).forEach(([name, value]) => {
     root.style.setProperty(`--theme-${name}`, value)
   })
