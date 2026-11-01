@@ -20,7 +20,7 @@
 body {
   @apply bg-cream text-ink font-sans;
   background-image:
-    linear-gradient(rgb(var(--theme-cream) / 0.78), rgb(var(--theme-cream) / 0.78)),
+    linear-gradient(rgb(0 0 0 / 0.12), rgb(0 0 0 / 0.12)),
     var(--theme-background-image);
   background-position: center;
   background-repeat: no-repeat;
@@ -28,4 +28,18 @@ body {
   background-attachment: fixed;
   min-height: 100vh;
   transition: background-color 180ms ease, color 180ms ease;
+}
+
+/* Leesvlak voor de inhoud: de afbeelding blijft scherp, de tekst krijgt een rustige ondergrond. */
+#root main {
+  background-color: rgb(var(--theme-cream) / 0.9);
+  border-radius: 1rem;
+  box-shadow: 0 8px 30px rgb(0 0 0 / 0.18);
+}
+
+@media (min-width: 1024px) {
+  #root main {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
 }
